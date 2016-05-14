@@ -1,5 +1,7 @@
 package service;
 
+import input.FileRow;
+import input.PoiExcelFileIterator;
 import mapper.FileUploadMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.Iterator;
 
 @Service("pricelistProcessor")
 public class PricelistProcessingService {
@@ -42,6 +45,25 @@ public class PricelistProcessingService {
 
     private void processInboxFile(Path filePath) {
         LOG.info("Start processing of {} file", filePath.getFileName().toString());
+
+        Iterator<FileRow> iterator = null;
+        try {
+            iterator = getPricelistFileIterator(filePath);
+        } catch (IOException e) {
+            LOG.error("Error while accessing pricelist '{}'", e);
+            return;
+        }
+
         uploadMapper.startFileUpload(filePath.getFileName().toString(), new Date());
+
+        while (iterator.hasNext()) {
+            FileRow row = iterator.next();
+        }
     }
+
+    private Iterator<FileRow> getPricelistFileIterator(Path filePath) throws IOException {
+        return new PoiExcelFileIterator(Files.newInputStream(filePath));
+    }
+
+
 }
