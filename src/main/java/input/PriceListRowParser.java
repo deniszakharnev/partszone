@@ -14,7 +14,7 @@ public class PriceListRowParser implements UploadRowParser<PriceListUploadRow> {
     private final static String FILTER_INTEGER_REGEXP = "[\\s\\u00A0]";
 
     @Override
-    public PriceListUploadRow parse(FileRow row) throws ParseRowException, EmptyRowException {
+    public PriceListUploadRow parse(FileRow row) throws ParseRowException {
         boolean parseErrorFound = false;
         PriceListUploadRow uploadRow = new PriceListUploadRow();
 
@@ -72,17 +72,6 @@ public class PriceListRowParser implements UploadRowParser<PriceListUploadRow> {
             }
         } else {
             uploadRow.setPrice(0.0);
-        }
-
-        if (row.isFieldEmpty(MANUFACTURER_NAME_IDX)
-                && row.isFieldEmpty(MODEL_NAME_IDX)
-                && row.isFieldEmpty(FEATURES_IDX)
-                && row.isFieldEmpty(DETAIL_NUMBER_IDX)
-                && row.isFieldEmpty(DETAIL_NAME_IDX)
-                && row.isFieldEmpty(QUANTITY_IDX)
-                && row.isFieldEmpty(MIN_QUANTITY_IDX)
-                && uploadRow.getPrice() == 0.0) {
-            throw new EmptyRowException();
         }
 
         if (parseErrorFound) {

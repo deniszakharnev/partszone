@@ -12,12 +12,6 @@ public abstract class UploadRow {
 
     private String fileRow;
 
-    private FileUpload upload;
-
-    public UploadRow(FileUpload upload) {
-        this.upload = upload;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -39,11 +33,5 @@ public abstract class UploadRow {
                 .split(FILEROW_DELIMITER_REGEXP)) : null;
     }
 
-    public FileUpload getUpload() {
-        return upload;
-    }
-
-    public void setUpload(FileUpload upload) {
-        this.upload = upload;
-    }
+    public abstract boolean isEmpty();
 }

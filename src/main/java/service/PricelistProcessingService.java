@@ -1,8 +1,6 @@
 package service;
 
-import input.FileRow;
-import input.PoiExcelFileIterator;
-import mapper.FileUploadMapper;
+import input.FileProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.Iterator;
 
 @Service("pricelistProcessor")
 public class PricelistProcessingService {
@@ -26,7 +22,7 @@ public class PricelistProcessingService {
     private String inboxPath;
 
     @Autowired
-    private FileUploadMapper uploadMapper;
+    private FileProcessor processor;
 
     @Scheduled(cron = "${cron.settings}")
     public void processInboxFiles() {
@@ -45,25 +41,6 @@ public class PricelistProcessingService {
 
     private void processInboxFile(Path filePath) {
         LOG.info("Start processing of {} file", filePath.getFileName().toString());
-
-        Iterator<FileRow> iterator = null;
-        try {
-            iterator = getPricelistFileIterator(filePath);
-        } catch (IOException e) {
-            LOG.error("Error while accessing pricelist '{}'", e);
-            return;
-        }
-
-        uploadMapper.startFileUpload(filePath.getFileName().toString(), new Date());
-
-        while (iterator.hasNext()) {
-            FileRow row = iterator.next();
-        }
+        processor.process(filePath);
     }
-
-    private Iterator<FileRow> getPricelistFileIterator(Path filePath) throws IOException {
-        return new PoiExcelFileIterator(Files.newInputStream(filePath));
-    }
-
-
 }

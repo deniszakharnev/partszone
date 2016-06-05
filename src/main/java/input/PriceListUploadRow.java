@@ -1,5 +1,7 @@
 package input;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 public class PriceListUploadRow extends UploadRow implements Cloneable {
     private String model;
     private String feature;
@@ -92,6 +94,18 @@ public class PriceListUploadRow extends UploadRow implements Cloneable {
     }
 
     @Override
+    public boolean isEmpty() {
+        return isNullOrEmpty(manufacturerName)
+                && isNullOrEmpty(feature)
+                && isNullOrEmpty(detailNumber)
+                && isNullOrEmpty(detailName)
+                && isNullOrEmpty(quantity)
+                && isNullOrEmpty(minimalQuantity)
+                && price == 0.0;
+    }
+
+
+    @Override
     public PriceListUploadRow clone() throws CloneNotSupportedException {
         PriceListUploadRow copyRow = new PriceListUploadRow();
 
@@ -104,7 +118,6 @@ public class PriceListUploadRow extends UploadRow implements Cloneable {
         copyRow.setQuantity(quantity);
         copyRow.setMinimalQuantity(minimalQuantity);
         copyRow.setCurrency(currency);
-        copyRow.setUpload(getUpload());
 
         return copyRow;
     }

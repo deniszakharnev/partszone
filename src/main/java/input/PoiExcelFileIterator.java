@@ -15,7 +15,7 @@ public class PoiExcelFileIterator implements Iterator<FileRow> {
 
     public PoiExcelFileIterator(InputStream stream) {
         currentSheetIdx = 0;
-        currentRowIdx = 0;
+        currentRowIdx = 1;
         try {
             workbook = WorkbookFactory.create(stream);
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class PoiExcelFileIterator implements Iterator<FileRow> {
         currentRowIdx++;
         if (!isLastSheet() && isNoMoreRowsOnTheSheet()) {
             currentSheetIdx++;
-            currentRowIdx = 0;
+            currentRowIdx = 1;
         }
         return excelRow;
     }
